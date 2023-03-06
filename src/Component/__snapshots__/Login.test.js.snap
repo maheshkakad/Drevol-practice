@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render react title 1`] = `
+<div
+  className="container"
+>
+  <form>
+    <input
+      placeholder="username"
+      type="text"
+    />
+    <input
+      placeholder="password"
+      type="passsword"
+    />
+    <button>
+      Login
+    </button>
+  </form>
+</div>
+`;
