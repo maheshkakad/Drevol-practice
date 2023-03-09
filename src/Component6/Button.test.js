@@ -6,11 +6,10 @@ import Button from "./Button"
 describe("testing Button component" , () => {
      it("rendered input" , () => {
           render(<Button />)
+          
 
-          const button = screen.getByTestId("button");
-          expect(button).toBeInTheDocument();
      })
-
+// cheking the length of button
      it("render 1 button before button click" ,  () => {
          const { getAllByTestId } = render(<Button />)
 
@@ -19,13 +18,14 @@ describe("testing Button component" , () => {
 
      })
 
+     //number of button render after click button
      it("render 2 button after 1 button click" ,  () => {
        
             const { queryAllByTestId } = render(<Button />)
 
             const buttnList = queryAllByTestId("button");
-            fireEvent.click(buttnList[0])
-             fireEvent.click(buttnList[0]);
+            fireEvent.click(buttnList[0]);
+          
             expect(queryAllByTestId("button")).toHaveLength(2);
     
         

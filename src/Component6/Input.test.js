@@ -5,7 +5,7 @@ import Input from "./Input"
 
 describe("testing input component" , () => {
      it("rendered input" , () => {
-          render(<Input sahowDiv={false}  />)
+          render(<Input showDiv={false}  />)
 
           const inputele = screen.getByTestId("searchbar");
           expect(inputele).toBeInTheDocument();
@@ -15,7 +15,7 @@ describe("testing input component" , () => {
           render(<Input showDiv={true}/>)
 
           const div = screen.getByTestId("divWeWantToShow");
-          expect(div).toBeTruthy();
+          expect(div).toBeInTheDocument();
      })
      
      it("dont render div" , () => {
