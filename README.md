@@ -1,69 +1,199 @@
-# Drevol-practice
+import React, { useState, useEffect } from "react";
 
-import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
-
-function App() {
-  const columns = [
-    { field: "id", headerName: "ID", width: 70 },
+function MyComponent() {
+  const initialData = [
+    // Your data here
     {
-      field: "name",
-      headerName: "Name",
-      width: 150,
-      renderCell: (params) => (
-        <>
-          <TextField
-            value={params.value}
-            onChange={(e) => handleNameChange(e, params.id)}
-          />
-          <Select
-            value={params.value}
-            onChange={(e) => handleStatusChange(e, params.id)}
-          >
-            <MenuItem value="active">Active</MenuItem>
-            <MenuItem value="inactive">Inactive</MenuItem>
-          </Select>
-          <button onClick={handlechick}>submit</button>
-        </>
-      )
+      Release: "2023.10 B",
+      DataList: [
+        {
+          Product: "WinBlue",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win8",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win7",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win21h2",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win21",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win8",
+          P90TTPRData: "5.32"
+        }
+      ]
     },
     {
-      field: "status",
-      headerName: "Status",
-      width: 150
+      Release: "2023.9 B",
+      DataList: [
+        {
+          Product: "WinBlue",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win8",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win7",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win21h2",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win21",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win8",
+          P90TTPRData: "5.32"
+        }
+      ]
+    },
+    {
+      Release: "2023.8 B",
+      DataList: [
+        {
+          Product: "WinBlue",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win8",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win7",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win21h2",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win21",
+          P90TTPRData: "5.32"
+        },
+        {
+          Product: "Win8",
+          P90TTPRData: "5.32"
+        }
+      ]
     }
   ];
 
-  const initialRows = [
-    { id: 1, name: "John", status: "active" },
-    { id: 2, name: "Doe", status: "inactive" }
-  ];
-  const [rows, setRows] = React.useState(initialRows);
+  const [data, setData] = useState(initialData);
+  const [selectedReleases, setSelectedReleases] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
-  const handleNameChange = (e, id) => {
-    const updatedRows = rows.map((row) =>
-      row.id === id ? { ...row, name: e.target.value } : row
-    );
-    setRows(updatedRows);
+  useEffect(() => {
+    filterData();
+  }, [selectedReleases, selectedProducts]);
+
+  const filterData = () => {
+    const filteredData = data
+      .filter((group) => {
+        const releaseMatches =
+          selectedReleases.length === 0 ||
+          selectedReleases.includes(group.Release);
+        return releaseMatches;
+      })
+      .map((group) => {
+        const filteredProducts =
+          selectedProducts.length === 0
+            ? group.DataList
+            : group.DataList.filter((item) =>
+                selectedProducts.includes(item.Product)
+              );
+        return { ...group, DataList: filteredProducts };
+      });
+
+    setFilteredData(filteredData);
   };
 
-  const handlechick = () => {
-    console.log(rows);
+  const handleReleaseChange = (event) => {
+    const releaseValue = event.target.value;
+    if (selectedReleases.includes(releaseValue)) {
+      setSelectedReleases(
+        selectedReleases.filter((release) => release !== releaseValue)
+      );
+    } else {
+      setSelectedReleases([...selectedReleases, releaseValue]);
+    }
   };
-  const handleStatusChange = (e, id) => {
-    const updatedRows = rows.map((row) =>
-      row.id === id ? { ...row, status: e.target.value } : row
-    );
-    setRows(updatedRows);
+
+  const handleProductChange = (event) => {
+    const productValue = event.target.value;
+    if (selectedProducts.includes(productValue)) {
+      setSelectedProducts(
+        selectedProducts.filter((product) => product !== productValue)
+      );
+    } else {
+      setSelectedProducts([...selectedProducts, productValue]);
+    }
   };
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} />
+    <div>
+      <label>
+        Select Releases:
+        {["2023.10 B", "2023.9 B", "2023.8 B"].map((release) => (
+          <label key={release}>
+            <input
+              type="checkbox"
+              value={release}
+              checked={selectedReleases.includes(release)}
+              onChange={handleReleaseChange}
+            />
+            {release}
+          </label>
+        ))}
+      </label>
+
+      <label>
+        Select Products:
+        {["WinBlue", "Win8", "Win7", "Win21h2", "Win21"].map((product) => (
+          <label key={product}>
+            <input
+              type="checkbox"
+              value={product}
+              checked={selectedProducts.includes(product)}
+              onChange={handleProductChange}
+            />
+            {product}
+          </label>
+        ))}
+      </label>
+
+      <div>
+        <ul>
+          {filteredData.map((group, index) => (
+            <li key={index}>
+              Release: {group.Release}
+              <ul>
+                {group.DataList.map((item, itemIndex) => (
+                  <li key={itemIndex}>
+                    Product: {item.Product}, P90TTPRData: {item.P90TTPRData}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
-export default App;
+
+export default MyComponent;
